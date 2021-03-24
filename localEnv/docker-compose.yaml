@@ -1,0 +1,37 @@
+version: '3.1'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${CONTENT_MONGO_DATABASE}
+    volumes:
+      - ./mongo_data:/data/db
+      - ./MongoDB/init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27017:27017
+
+  contentservice:
+    image: local-guide
+    restart: always
+    environment:
+      MONGO_CONNECTION: "mongodb://mongo/${CONTENT_MONGO_DATABASE}"
+      MONGO_DB: ${CONTENT_MONGO_DATABASE}
+      MONGO_COLLECTION: ${CONTENT_MONGO_COLLECTION}
+      MONGO_USERNAME: ${CONTENT_MONGO_USERNAME}
+      MONGO_PASSWORD: ${CONTENT_MONGO_PASSWORD}
+      PORT: 6443
+    depends_on: 
+      - mongo
+    ports:
+      - 6443:6443
+
+  rabbit-mq:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+
