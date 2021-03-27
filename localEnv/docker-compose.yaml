@@ -22,11 +22,11 @@ services:
       MONGO_COLLECTION: ${CONTENT_MONGO_COLLECTION}
       MONGO_USERNAME: ${CONTENT_MONGO_USERNAME}
       MONGO_PASSWORD: ${CONTENT_MONGO_PASSWORD}
-      PORT: 6443
+      PORT: 8443
     depends_on: 
       - mongo
     ports:
-      - 6443:6443
+      - 8443:8443
 
   rabbit-mq:
     image: rabbitmq:3-management
