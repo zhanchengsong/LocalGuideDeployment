@@ -35,3 +35,16 @@ services:
       - 5672:5672
       - 15672:15672
 
+  minio: 
+    image: bitnami/minio:latest 
+    restart: always
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+    volumes:
+      - minio:/data
+    ports:
+      - 9000:9000
+
+volumes:
+  minio:
